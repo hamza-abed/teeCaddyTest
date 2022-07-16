@@ -1,0 +1,26 @@
+{
+  "sync-rsync.shell": "ssh -p 22",
+  "sync-rsync.remote": "/var/www/testTee",       // change this to your own path
+  "sync-rsync.local": "/mnt/c/ADEV/testTEE",  // change this to your own path
+  "sync-rsync.onSave": true,
+  "sync-rsync.onSaveIndividual": true,
+  "sync-rsync.executableShell": "C:\\Windows\\System32\\bash.exe",
+  "sync-rsync.exclude": [
+    ".git",
+    ".vscode",
+    ".gitattributes",
+    ".gitignore",
+    "wiki",
+    "vendor",
+    "var",
+    "doc",
+    "piplines",
+    "tests",
+    "backup_bdd",
+    "docker/database/data",
+    "docker/pgadmin",
+    "migrations"
+  ],
+  "sync-rsync.chmod": "D2775,F664",
+  "sync-rsync.useWSL": true
+}

@@ -1,0 +1,56 @@
+# Docker Compose File
+services: 
+    caddy:
+        container_name: caddy
+        image: dunglas/mercure
+        labels: 
+          - "traefik.enable=true" 
+          - "traefik.http.routers.mercure.entrypoints=web,websecure" 
+          - "traefik.http.routers.mercure.rule=Host(`mercure.docker.localhost`)"           
+          - "traefik.http.routers.mercure.middlewares=testHeader@file" 
+          - "traefik.http.routers.mercure.tls=true" 
+          - "traefik.http.routers.mercure.service=mercure" 
+          - "traefik.http.services.mercure.loadbalancer.serverstransport=skip-tls-verify@file"
+        volumes:
+          - ./Caddyfile:/etc/caddy/Caddyfile
+        ports:
+          - 9000:80
+    #mercure: 
+    #    image: dunglas/mercure 
+    #    labels: 
+    #      - "traefik.enable=true" 
+    #      - "traefik.http.routers.mercure.entrypoints=web,websecure" 
+    #      - "traefik.http.routers.mercure.rule=Host(`mercure.docker.localhost`)"           
+    #      - "traefik.http.routers.mercure.middlewares=testHeader@file" 
+    #      - "traefik.http.routers.mercure.tls=true" 
+    #      - "traefik.http.routers.mercure.service=mercure" 
+    #      - "traefik.http.services.mercure.loadbalancer.serverstransport=skip-tls-verify@file" 
+    #    environment: 
+    #        DEBUG: "debug" 
+    #        SERVER_NAME: ':80' 
+    #        MERCURE_PUBLISHER_JWT_KEY: '!ChangeMe!' 
+    #        MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeMe!' 
+    #        MERCURE_EXTRA_DIRECTIVES: |- 
+    #          cors_origins "*" 
+    #          anonymous 
+    #    ports: 
+    #        - "9000:80" 
+
+    traefik: 
+      image: "traefik:v2.4.1" 
+      command: 
+        - "--log.level=DEBUG" 
+        - "--configfile=/traefik.yml" 
+      labels: 
+        - "traefik.enable=true" 
+        - "traefik.http.routers.api.entrypoints=web" 
+        - "traefik.http.routers.api.rule=Host(`traefik.docker.localhost`)" 
+        - "traefik.http.routers.api.service=api@internal" 
+      ports: 
+        - "80:80" 
+        - "443:443" 
+        - "8080:8080" 
+      volumes: 
+        - /var/run/docker.sock:/var/run/docker.sock:ro 
+        - ./traefik.yml:/traefik.yml 
+        - ./dynamic.yml:/dynamic.yml

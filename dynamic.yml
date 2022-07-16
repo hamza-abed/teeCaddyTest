@@ -1,0 +1,29 @@
+# Traefik Dynamic Configuration (File provider)
+# dynamic.yml
+http:
+  serversTransports: 
+    skip-tls-verify: 
+      insecureSkipVerify: false
+   
+  middlewares: 
+    testHeader: 
+      headers: 
+        accessControlAllowMethods: 
+          - GET 
+          - OPTIONS 
+          - PUT 
+          - FETCH 
+        accessControlAllowOriginList: 
+          - https://mercure.docker.localhost 
+        accessControlMaxAge: 100 
+        accessControlAllowHeaders: 
+          - sec-ch-ua 
+          - sec-ch-ua-mobile 
+          - sec-ch-ua-platform 
+          - Access-Control-Allow-Credentials 
+          - Content-Type 
+          - Authorization 
+          - heartbeattimeout 
+        customResponseHeaders: 
+          Access-Control-Allow-Credentials : true 
+        addVaryHeader: true 

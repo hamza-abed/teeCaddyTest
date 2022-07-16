@@ -1,0 +1,20 @@
+# Traefik Static Configuration
+# traefik.yml
+log: 
+  level: "DEBUG" 
+
+api: 
+  dashboard: true 
+  debug: true 
+
+entryPoints: 
+  web: 
+    address: ":80" 
+  websecure: 
+    address: ":443" 
+
+providers: 
+  docker: {} 
+  file: 
+    filename: /dynamic.yml 
+    watch: true 

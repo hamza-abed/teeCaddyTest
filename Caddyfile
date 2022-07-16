@@ -1,0 +1,38 @@
+{
+    # Debug
+    {$DEBUG}
+    # HTTP/3 support
+    servers {
+        protocol {
+            experimental_http3
+        }
+    }
+}
+
+:80
+
+log
+
+route {
+    redir / /.well-known/mercure/ui/
+    encode gzip
+
+    mercure {
+        # Enable the demo endpoint (disable it in production!)
+        transport_url bolt:///etc/caddy/database.db?bucket_name=pocwconnect&size=1000000&cleanup_frequency=500
+        demo
+        # Publisher JWT key
+        publisher_jwt !ChangeMe!
+        # Subscriber JWT key
+        subscriber_jwt !ChangeMe!
+        # CORS
+        cors_origins *
+        heartbeat 15s
+        # Allow anonymous subscribers (double-check that it's what you want)
+        anonymous
+        # Enable the subscription API (double-check that it's what you want)
+        subscriptions
+    }
+
+    respond "Not Found" 404
+}
